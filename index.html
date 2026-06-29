@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chọn Đoá Hoa Bạn Thích</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: url('vuon.png') no-repeat center center;
+            background-size: cover;
+            position: relative;
+        }
+
+        #flower-area {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45%;
+            z-index: 10;
+            display: none;
+            cursor: pointer;
+        }
+
+        #kien-character {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 150px;
+            opacity: 0; 
+            z-index: 5;
+            transition: opacity 1.5s ease-in-out;
+            /* Bóng đổ giúp ảnh rõ nét hơn */
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5)); 
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgm" src="Download.mp3" loop></audio>
+
+    <img id="kien-character" src="kien.png" alt="Gợi ý">
+
+    <div id="flower-area" title="Nhấp vào hoa!"></div>
+
+    <script>
+        window.onload = () => {
+            const audio = document.getElementById('bgm');
+            const kien = document.getElementById('kien-character');
+            const flowerArea = document.getElementById('flower-area');
+
+            // Xử lý phát nhạc
+            audio.play().catch(() => {
+                console.log("Cần click 1 lần vào trang để phát nhạc.");
+                document.body.addEventListener('click', () => {
+                    audio.play();
+                }, { once: true });
+            });
+
+            // Kịch bản hiện ra
+            setTimeout(() => {
+                kien.style.opacity = '1';
+                setTimeout(() => {
+                    flowerArea.style.display = 'block';
+                }, 1000); 
+            }, 2500); 
+
+            // ĐÃ FIX LỖI CHUYỂN TRANG
+            flowerArea.addEventListener('click', () => {
+                // Chuyển sang index2.html trên CÙNG 1 TAB sẽ không bị lỗi
+                // Nhớ phải tạo sẵn file index2.html trong cùng thư mục nhé!
+                window.location.href = 'a.html'; 
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@500;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        /* --- CSS MÀN HÌNH CHỜ --- */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .envelope-btn {
+            background: none;
+            border: none;
+            color: #ff7882;
+            font-size: 5rem;
+            cursor: pointer;
+            animation: bounce 2s infinite ease-in-out;
+            transition: transform 0.3s;
+        }
+
+        .envelope-btn:hover {
+            transform: scale(1.1);
+            color: #f61f1f;
+        }
+
+        .intro-text {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            font-family: 'Dancing Script', cursive;
+            letter-spacing: 2px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Vùng chứa trái tim rơi */
+        #heart-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            top: -10vh;
+            color: #ff4d4d;
+            font-size: 20px;
+            animation: fall linear forwards;
+            filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.5));
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(0.8); opacity: 0; }
+        }
+
+        /* Hộp thư */
+        .letter-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 700px;
+            border: 12px solid #ffca28;
+            border-radius: 15px;
+            padding: 5px;
+            background-color: #fff;
+            transform: scale(0);
+        }
+
+        .letter-wrapper.show {
+            animation: popInLetter 1s 1s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .letter-content {
+            background-color: #fdfdf9;
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 25px 25px;
+            border: 2px solid #fbdc6a;
+            border-radius: 8px;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+        }
+
+        @keyframes popInLetter {
+            to { transform: scale(1); }
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #b35900;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* --- PHẦN VĂN BẢN (ĐÃ CẬP NHẬT THANH CUỘN) --- */
+        .text-body {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #4a4a4a;
+            line-height: 1.8;
+            text-align: justify;
+            width: 100%;
+            
+            /* Giới hạn chiều cao văn bản để không tràn màn hình */
+            max-height: 45vh; 
+            /* Bật thanh cuộn dọc nếu chữ dài quá max-height */
+            overflow-y: auto; 
+            /* Đẩy chữ cách thanh cuộn một chút cho thoáng */
+            padding-right: 15px; 
+        }
+
+        /* Làm đẹp thanh cuộn */
+        .text-body::-webkit-scrollbar {
+            width: 8px;
+        }
+        .text-body::-webkit-scrollbar-track {
+            background: #fdfdf9; 
+            border-radius: 10px;
+        }
+        .text-body::-webkit-scrollbar-thumb {
+            background: #ffca28; 
+            border-radius: 10px;
+        }
+        .text-body::-webkit-scrollbar-thumb:hover {
+            background: #ffb300; 
+        }
+        /* ------------------------------------------- */
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.5rem;
+            background-color: #4a4a4a;
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .start-btn {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #ffca28, #ffb300);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.5rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 179, 0, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 179, 0, 0.6);
+        }
+
+        .start-btn:active {
+            transform: translateY(1px);
+        }
+
+        .cute-decor {
+            position: absolute;
+            bottom: -15px;
+            right: -10px;
+            width: 80px;
+            opacity: 0;
+        }
+        
+        .cute-decor.show {
+            animation: popInLetter 0.5s 2.5s forwards;
+        }
+
+        @media (max-width: 600px) {
+            .title { font-size: 2.5rem; margin-bottom: 10px; }
+            .text-body { font-size: 1.4rem; max-height: 50vh; }
+            .letter-content { padding: 20px 15px; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="intro-screen">
+        <button class="envelope-btn" id="open-btn">
+            <i class="fa-solid fa-envelope-open-text"></i>
+        </button>
+        <div class="intro-text">Bnga có 1 tin nhắn chưa đọc...</div>
+    </div>
+
+    <div id="heart-container"></div>
+
+    <div class="letter-wrapper" id="main-letter">
+        <div class="letter-content">
+            <h1 class="title">Thân gửi</h1>
+            
+            <div class="text-body" id="text-scroll-box">
+                <span id="typed-text"></span><span class="cursor" id="cursor"></span>
+            </div>
+
+            <button class="start-btn" id="start-btn">Xem Nèee</button>
+            
+            <img class="cute-decor" id="decor-gif" src="https://media.giphy.com/media/YKUvclrGYmDKXwtphf/giphy.gif" alt="cute decor">
+        </div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="2.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const introScreen = document.getElementById('intro-screen');
+        const openBtn = document.getElementById('open-btn');
+        const mainLetter = document.getElementById('main-letter');
+        const decorGif = document.getElementById('decor-gif');
+        const bgMusic = document.getElementById('bg-music');
+        const heartContainer = document.getElementById('heart-container');
+        const textScrollBox = document.getElementById('text-scroll-box'); // Vùng chữ để tự cuộn
+        
+        let bgHeartInterval;
+
+        function createHeart(isMassive = false) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤'; 
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            if (isMassive) {
+                heart.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+                heart.style.fontSize = (Math.random() * 30 + 15) + 'px';
+                heart.style.zIndex = 100; 
+            } else {
+                heart.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                heart.style.opacity = Math.random() * 0.6 + 0.2;
+            }
+
+            heartContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, parseFloat(heart.style.animationDuration) * 1000);
+        }
+
+        // LỜI THƯ - ÔNG CỨ VIẾT DÀI THOẢI MÁI NHÉ
+        const message = "Võ Thị Bích Nga aka e guộc tui, chúc mừng tuổi mới nhoaa từ giờ là người lớn rồi đó lớn nhanh dữ ta, trong thân tâm a nghĩ bé bé mới lớp 10 thoai đấy thoáng cái xong lớp 12 ròi nè. Sắp xa gia đình, xa Kon Tum,... lên thành phố học ròii đó, cũm đến lúc phải phong trần đứng trước gió để thực hiện những điều mà e ước mong, nhưng cũm đừng quên sau ánh hào quang m không cô độc vì vẫn còn có t hiểu ch =)) nên là buồn cái gì hay là có gì đó cần người tâm sự lắng nghe thoi thì cứ nhắn cho a có thể a không giỏi lắm trong việc đưa ra lời khuyên nhma nếu cần 1 người chỉ để lắng nghe lòng m thoi thì a vẫn ở đây mà!!! Cuối cùng, chúc Bnga gặp nhiều may mắn - bản lĩnh - sức khoẻ để bơi giữa dòng người xa lạ. Biến những tai ương thành may mắn và tìm được cho mình người mà e thương nee. Tuổi mới đánh son không lem, tán nền không mốc và không khóc vì đàn ông nha hahahaha.";
+        
+        const typedTextSpan = document.getElementById("typed-text");
+        const cursorSpan = document.getElementById("cursor");
+        const startBtn = document.getElementById("start-btn");
+        
+        let charIndex = 0;
+        const typingDelay = 40; // Đẩy tốc độ gõ lên xíu cho đỡ sốt ruột nếu thư dài
+
+        function type() {
+            if (charIndex < message.length) {
+                typedTextSpan.textContent += message.charAt(charIndex);
+                charIndex++;
+                
+                // Tự động cuộn thanh trượt xuống dưới cùng khi chữ gõ dài quá màn hình
+                textScrollBox.scrollTop = textScrollBox.scrollHeight;
+
+                setTimeout(type, typingDelay);
+            } else {
+                cursorSpan.style.display = "none";
+                startBtn.style.visibility = "visible";
+                startBtn.style.opacity = "1";
+                startBtn.style.transition = "opacity 1s ease";
+            }
+        }
+
+        openBtn.addEventListener('click', () => {
+            introScreen.style.opacity = "0";
+            setTimeout(() => { introScreen.style.visibility = "hidden"; }, 1000);
+
+            bgMusic.play();
+
+            bgHeartInterval = setInterval(() => createHeart(false), 400);
+
+            mainLetter.classList.add('show');
+            decorGif.classList.add('show');
+
+            setTimeout(() => {
+                type();
+            }, 2500);
+        });
+
+        let isStarted = false; 
+
+        startBtn.addEventListener('click', () => {
+            if (!isStarted) {
+                isStarted = true; 
+                startBtn.innerHTML = "Chưa Hết Đâu Nhee"; 
+                startBtn.style.background = "linear-gradient(135deg, #ff7882, #f61f1f)"; 
+                
+                let massiveDropCount = 0;
+                const massiveDropInterval = setInterval(() => {
+                    for(let i = 0; i < 8; i++) {
+                        createHeart(true);
+                    }
+                    massiveDropCount++;
+                    if(massiveDropCount > 100) {
+                        clearInterval(massiveDropInterval);
+                    }
+                }, 50);
+            } else {
+                window.location.href = "hoa.html";
+            }
+        });
+
+    </script>
+</body>
+</html>

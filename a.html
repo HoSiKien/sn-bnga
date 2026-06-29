@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+	<title>Happy Birthday</title>
+	<meta charset="UTF-8" />
+	<meta name="description" content="Happy Birthday">
+	<meta name="robots" content="index, follow" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="stylesheet.css">
+	<link rel="stylesheet" type="text/css" href="loading.css">
+	<link href='https://fonts.googleapis.com/css?family=Signika' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+	<div class="loading"></div>
+	<audio class="song" controls loop>
+        <source src="hbd.mp3"></source>
+	   Your browser isn't invited for super fun audio time.
+    </audio>
+    <div class="balloons text-center" id="b1">
+    	<h2 style="color:#F2B300;">H</h2>
+    </div>
+    <div class="balloons text-center" id="b2">
+    	<h2 style="color:#0719D4;">P</h2>
+    </div>
+	<div class="balloons text-center" id="b3">
+    	<h2 style="color:#D14D39;">B</h2>
+    </div>
+	<div class="balloons text-center" id="b4">
+    	<h2 style="color:#8FAD00;">D</h2>
+    </div>
+	<div class="balloons text-center" id="b5">
+    	<h2 style="color:#8377E4;">N</h2>
+    </div>
+    <div class="balloons text-center" id="b6">
+    	<h2 style="color:#99C96A;">G</h2>
+    </div>
+    <div class="balloons text-center" id="b7">
+    	<h2 style="color:#20CFB4;">A</h2>
+    </div>
+
+    <img src="Balloon-Border.png" width="100%" class="balloon-border">
+ 
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_yellow"></div>
+			</div>
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_red"></div>
+			</div>
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_blue"></div>
+			</div>
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_green"></div>
+			</div>
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_pink"></div>
+			</div>
+			<div class="col-md-2 col-xs-2 bulb-holder">
+				<div class="bulb" id="bulb_orange"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<img src="banner.png" class="bannar">
+			</div>
+		</div>
+		
+		<div class="row cake-cover">
+			<div class="col-md-12 text-center">
+				<div class="cake" style="display: none;">
+					<img src="cake128.png" id="real-cake" alt="Bánh Sinh Nhật" style="max-width: 250px; z-index: 10; position: relative;">
+				</div>
+			</div>
+		</div>
+
+		<div class="navbar navbar-fixed-bottom">
+			<div class="row">
+				<div class="col-md-6 text-center col-md-offset-3">
+					<button class="btn btn-primary" id="turn_on">Coá Ai Ở Đó Hem</button>
+					<button class="btn btn-primary" id="play">Thêm Chút Nhạc Nhoa</button>
+					<button class="btn btn-primary" id="bannar_coming">Hình Như Thiếu Thiếu Gì Đoá</button>
+					<button class="btn btn-primary" id="balloons_flying">Nữa Nèe</button>
+					<button class="btn btn-primary" id="cake_fadein">Tèn Ten</button>
+					<button class="btn btn-primary" id="light_candle">Tắt Đèn Nàa</button>
+					<button class="btn btn-primary" id="wish_message">Seng I Chu Ha Ham Ni Ta</button>
+					<button class="btn btn-primary" id="story">Xem Nè</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="effect.js"></script>
+
+<script>
+$(window).on('load', function() {
+    setTimeout(function() {
+        // 1. Xử lý logic khi bấm nút "Tắt đèn & Thổi nến"
+        $('#light_candle').off('click').on('click', function() {
+            $(this).fadeOut('slow');
+
+            $('body').removeClass('peach peach-after').css({
+                'background-color': '#0d0d0d',
+                'transition': 'background-color 2s ease'
+            });
+
+            $('#real-cake').css({
+                'filter': 'drop-shadow(0px 0px 30px rgba(255, 153, 51, 0.9)) brightness(1.2)',
+                'transition': 'all 1.5s ease'
+            });
+
+            if ($('#blow_status').length === 0) {
+                $('body').append('<div id="blow_status" style="color: #fff; text-align: center; position: fixed; bottom: 120px; width: 100%; font-family: \'Signika\', sans-serif; font-size: 26px; z-index: 9999; text-shadow: 2px 2px 4px #000;">Ghé sát mic và thổi nến đi nào! 🎂💨</div>');
+            } else {
+                $('#blow_status').html("Ghé sát mic và thổi nến đi nào! 🎂💨").fadeIn();
+            }
+
+            startMicForBlowing();
+        });
+
+        // 2. Xử lý logic CHUYỂN TRANG khi bấm nút cuối cùng "A mesage for you"
+        $('#story').off('click').on('click', function() {
+            // Chuyển hướng sang file HappyBirthday.html nằm cùng thư mục
+            window.location.href = "HappyBirthday.html";
+        });
+
+    }, 500); 
+
+    function startMicForBlowing() {
+        let isBlowing = false;
+        const BLOW_THRESHOLD = 45; 
+
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const analyser = audioContext.createAnalyser();
+            const microphone = audioContext.createMediaStreamSource(stream);
+            
+            microphone.connect(analyser);
+            analyser.fftSize = 256;
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function detect() {
+                if (isBlowing) return;
+                analyser.getByteFrequencyData(dataArray);
+                
+                let sum = 0;
+                for (let i = 0; i < bufferLength; i++) {
+                    sum += dataArray[i];
+                }
+                let averageVolume = sum / bufferLength;
+
+                if (averageVolume > BLOW_THRESHOLD) {
+                    isBlowing = true;
+                    stream.getTracks().forEach(track => track.stop());
+                    extinguishCandle();
+                } else {
+                    requestAnimationFrame(detect);
+                }
+            }
+            detect();
+        }).catch(err => {
+            console.error("Lỗi mic:", err);
+            $('#blow_status').text("Không mở được Mic! Nhớ chạy qua Live Server nhé.");
+        });
+    }
+
+    function extinguishCandle() {
+        $('#real-cake').css({
+            'filter': 'brightness(0.5)',
+            'transition': 'all 0.5s ease'
+        });
+        
+        $('#blow_status').text("Phùuuu... Thổi nến thành công rồi! 🎉").fadeOut(2500);
+
+        setTimeout(function() {
+            $('body').css('background-color', '').addClass('peach-after');
+            
+            $('#real-cake').css({
+                'filter': 'brightness(1)',
+                'transition': 'all 1s ease'
+            });
+
+            $('#wish_message').fadeIn('slow');
+        }, 1500);
+    }
+});
+</script>
+
+</body>
+</html>
